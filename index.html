@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <!-- <link rel='shortcut icon' href='path/to/favicon.ico' type='image/x-icon' /> -->
+    <link href='https://www.mapbox.com/base/latest/base.css' rel='stylesheet' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 25%;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+        .map-overlay .map-overlay-inner {
+            background-color: #fff;
+            /*box-shadow:0 1px 2px rgba(0, 0, 0, 0.20);*/
+            box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.1);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 20px;
+        }
+
+        .map-overlay h2 {
+            line-height: 24px;
+            display: block;
+            margin: 0 0 10px;
+        }
+        /*.map-overlay .legend .bar {
+            height: 10px;
+            width: 100%;
+            background: linear-gradient(to right, #FCA107, #7F3121);
+        }*/
+        .map-overlay .legend > div{
+            height: 5px;
+            width: 100%;
+        }
+        .map-overlay .legend .routelabel {
+            height: 20px;
+            width: 100%;
+            padding-bottom: 5px;
+            display: block;
+        }
+        .map-overlay .legend .pointlabel {
+            height: 30px;
+            width: 100%;
+            padding-bottom: 10px;
+        }
+        .map-overlay .legend .label {
+            height: 30px;
+            width: 100%;
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            line-height: normal;
+        }
+        .map-overlay .legend .route1 {
+            background: #04C4FD;
+        }
+        .map-overlay .legend .route2 {
+            background: #FF01C4;
+        }
+        .map-overlay .legend .route4 {
+            background: #8401A9;
+        }
+        .map-overlay .legend .route5 {
+            background: #55FF00;
+        }
+        .map-overlay .legend .route6 {
+            background: #0071FE;
+        }
+        .map-overlay .legend .routeM {
+            background: #FF0000;
+        }
+        .map-overlay .legend .route21 {
+            background: #00A884;
+        }
+        .map-overlay .legend .route22 {
+            background: #720000;
+        }
+        .map-overlay .legend .route24 {
+            background: #CDAA66;
+        }
+        .map-overlay .legend .route26 {
+            background: #FF8A00;
+        }
+        .map-overlay .legend .rr {
+          background: repeating-linear-gradient(
+            to right,
+            #000,
+            #000 10px,
+            #fff 10px,
+            #fff 20px
+            );
+        }
+        #svg {padding-bottom: 50px}
+        @media only screen and (max-width: 500px) {
+            .map-overlay { visibility: hidden; }
+        }
+        @media only screen and (max-width: 1120px) {
+            .map-overlay { width: 30%; }
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='map-overlay top'>
+    <div class='map-overlay-inner'>
+        <h2>Santa Fe Trails</h2>
+        <div id='legend' class='legend'>
+            <div class='route1'></div>
+            <div class='routelabel'>Route 1</div>
+            <div class='route2'></div>
+            <div class='routelabel'>Route 2</div>
+            <div class='route4'></div>
+            <div class='routelabel'>Route 4</div>
+            <div class='route5'></div>
+            <div class='routelabel'>Route 5</div>
+            <div class='route6'></div>
+            <div class='routelabel'>Route 6</div>
+            <div class='routeM'></div>
+            <div class='routelabel'>Route M</div>
+            <div class='route21'></div>
+            <div class='routelabel'>Route 21</div>
+            <div class='route22'></div>
+            <div class='routelabel'>Route 22</div>
+            <div class='route24'></div>
+            <div class='routelabel'>Route 24</div>
+            <div class='route26'></div>
+            <div class='routelabel'>Route 26</div>
+            <div class='rr'></div>
+            <div class='pointlabel'>NM Rail Runner</div>
+            <!-- <div class='pointlabel'>
+              <svg height="25" width="25">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="white" />
+              </svg>
+              <span>Transit Center</span></div>
+              <div class='pointlabel'><svg height="25" width="25">
+                <circle cx="12" cy="12" r="10" stroke="lightgrey" stroke-width="2" fill="black" />
+              </svg>
+              <span>NM Rail Runner Station</span><br></div> -->
+
+              <div id="svg"><svg width="166px" height="40px" viewBox="0 0 166 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <circle id="Oval" stroke="#000000" stroke-width="2" fill="#FFFFFF" cx="8.5" cy="8.5" r="7.5"></circle>
+                      <circle id="Oval-Copy" stroke="#E6E9ED" stroke-width="2" fill="#000000" cx="8.5" cy="31.5" r="7.5"></circle>
+                      <text id="Transit-Center" font-family="HelveticaNeue, Helvetica Neue" font-size="12" font-weight="normal"  fill="#000000">
+                          <tspan x="26" y="13">Transit Center</tspan>
+                      </text>
+                      <text id="NM-Rail-Runner-Stati-Copy" font-family="HelveticaNeue, Helvetica Neue" font-size="12" font-weight="normal" fill="#000000">
+                          <tspan x="26" y="36">NM Rail Runner Station</tspan>
+                      </text>
+                  </g>
+              </svg></div>
+              <div class='label'><p>Transportation route information for the <a href="https://www.santafenm.gov/route_maps_and_schedules">Santa Fe Trails</a> bus system and the <a href="https://www.riometro.org/rio-metro-schedules/train-schedule/train-weekday">NM Rail Runner</a>.</p><p> Click the <span class='icon crosshair'></span> to locate yourself on the map!</p></div>
+        </div>
+    </div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2luY2xhcml1cyIsImEiOiJjaXBvZjdxOXQwMXFvZnVtM3A4YmFrejN2In0.ze62-HAgTD4AOTZPmRJh_Q';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/sinclarius/cj5funr5u2oar2rmt3exvcsrr', //stylesheet location
+    center: [-105.990,35.655], // starting position
+    zoom: 11.4 // starting zoom
+});
+
+map.addControl(new mapboxgl.NavigationControl());
+// Add geolocate control to the map.
+map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+}));
+</script>
+
+</body>
+</html>
